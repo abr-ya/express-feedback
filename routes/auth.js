@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
+const logger = require("../utils/logger");
 
 const normalizeUser = (user) => ({
 	id: user.id,
@@ -12,6 +13,7 @@ const normalizeUser = (user) => ({
 router.get("/login/success", (req, res) => {
 	if (req.user) {
 		const user = normalizeUser(req.user);
+		logger.info(`Login User: ${user.fullName}`);
 		res.status(200).json({
 			error: false,
 			message: "Successfully Loged In",
@@ -40,6 +42,7 @@ router.get(
 );
 
 router.get("/logout", (req, res) => {
+	logger.info(`Logout: ${req.user.id}`);
 	req.logout();
 	res.redirect(process.env.CLIENT_URL);
 });
