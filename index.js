@@ -7,6 +7,8 @@ const cookieSession = require("cookie-session");
 dotenv.config();
 
 const authRoute = require("./routes/auth");
+const feedbackRoute = require("./feedback/feedback.router");
+
 const passportStrategy = require("./passport");
 const logger = require("./utils/logger");
 
@@ -24,8 +26,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({ origin: FRONT_LIST, credentials: true }));
+app.use(express.json());
 
 app.use("/auth", authRoute);
+app.use("/feedback", feedbackRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => logger.info(`Listenting on port ${PORT}...`));
