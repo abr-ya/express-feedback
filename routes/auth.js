@@ -35,16 +35,19 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
 router.get(
 	"/google/callback",
-	passport.authenticate("google", {
-		successRedirect: process.env.CLIENT_URL,
-		failureRedirect: "/login/failed",
-	})
+	passport.authenticate("google"),
+	(req, res) => {
+		logger.info(`/google/callback redirect to ${req.headers.referer}`);
+		// res.redirect(process.env.CLIENT_URL);
+		res.redirect(req.headers.referer);
+	}
 );
 
 router.get("/logout", (req, res) => {
 	logger.info(`Logout: ${req.user.id}`);
 	req.logout();
-	res.redirect(process.env.CLIENT_URL);
+	// res.redirect(process.env.CLIENT_URL);
+	res.redirect(req.headers.referer);
 });
 
 module.exports = router;
