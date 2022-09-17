@@ -13,6 +13,8 @@ const passportStrategy = require("./passport");
 const logger = require("./utils/logger");
 
 const app = express();
+app.enable("trust proxy");
+
 const FRONT_LIST = [process.env.FRONT1, process.env.FRONT2, process.env.FRONT3]
 
 app.use(
