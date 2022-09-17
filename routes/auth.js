@@ -1,12 +1,21 @@
 const router = require("express").Router();
 const passport = require("passport");
 
+const normalizeUser = (user) => ({
+	id: user.id,
+	name: user.name.givenName,
+	fullName: user.displayName,
+	email: user._json.email,
+	ava: user._json.picture,
+});
+
 router.get("/login/success", (req, res) => {
 	if (req.user) {
+		const user = normalizeUser(req.user);
 		res.status(200).json({
 			error: false,
 			message: "Successfully Loged In",
-			user: req.user,
+			user: user,
 		});
 	} else {
 		res.status(403).json({ error: true, message: "Not Authorized" });
